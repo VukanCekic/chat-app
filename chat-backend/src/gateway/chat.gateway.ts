@@ -1,6 +1,6 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets/decorators";
 
-@WebSocketGateway(80, { namespace: 'chat' })
+@WebSocketGateway(99, { namespace: 'chat' })
 export class ChatGateway{
    @WebSocketServer()
    private server;

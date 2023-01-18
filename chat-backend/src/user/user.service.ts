@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 import { HashService } from './hash.service';
 import { User } from './user.model';
 
@@ -32,11 +33,11 @@ export class UserService {
     return result;
   }
 
-  public async logInUser(email: string, password: string) {
-    const user = await this.findOne(email);
+  public async logInUser(userToLogin: LoginUserDto) {
+    const user = await this.findOne(userToLogin.email);
 
     const isMatch = await await this.hashService.comparePassword(
-      password,
+      userToLogin.password,
       user.password,
     );
     if (!isMatch)

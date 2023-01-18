@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Col, Container, Form, Row, Button } from "react-bootstrap";
-// import { useSignupUserMutation } from "../services/appApi";
+import { useSignupUserMutation } from "../../services/app-api";
 import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
 import botImg from "../../images/bot.jpeg";
@@ -9,11 +9,8 @@ export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  //   const [signupUser, { isLoading, error }] = useSignupUserMutation();
+  const [signupUser, { isLoading, error }] = useSignupUserMutation();
   const navigate = useNavigate();
-  const error = false;
-  const isLoading = false;
-  const signupUser = false;
   //image upload states
   const [image, setImage] = useState(null);
   const [upladingImg, setUploadingImg] = useState(false);
@@ -32,11 +29,11 @@ export const Signup = () => {
   async function uploadImage() {
     const data = new FormData();
     data.append("file", image);
-    data.append("upload_preset", "your-preset-here");
+    data.append("upload_preset", "f6qni2l7");
     try {
       setUploadingImg(true);
       let res = await fetch(
-        "https://api.cloudinary.com/v1_1/your-username-here/image/upload",
+        "https://api.cloudinary.com/v1_1/dr0s4ws8o/image/upload",
         {
           method: "post",
           body: data,
@@ -44,7 +41,7 @@ export const Signup = () => {
       );
       const urlData = await res.json();
       setUploadingImg(false);
-      return urlData.url;
+      return urlData;
     } catch (error) {
       setUploadingImg(false);
       console.log(error);
@@ -54,15 +51,17 @@ export const Signup = () => {
   async function handleSignup(e) {
     e.preventDefault();
     if (!image) return alert("Please upload your profile picture");
-    const url = await uploadImage(image);
-    console.log(url);
-    // signup the user
-    // signupUser({ name, email, password, picture: url }).then(({ data }) => {
-    //   if (data) {
-    //     console.log(data);
-    //     navigate("/chat");
-    //   }
-    // });
+    const urlData = await uploadImage(image);
+    console.log(urlData.url);
+    signupUser({ name, email, password, picture: urlData.url }).then(
+      ({ data }) => {
+        console.log(data);
+        if (data) {
+          console.log(data);
+          navigate("/chat");
+        }
+      }
+    );
   }
 
   return (

@@ -1,17 +1,32 @@
 import React, { useContext, useState } from "react";
 import { Col, Container, Form, Row, Button, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../../services/app-api";
+
 import "./Login.css";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   // const { socket } = useContext(AppContext);
-  const [loginUser, { isLoading, error }] = useState("");
+  const [loginUser, { isLoading }] = useLoginUserMutation();
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
+    // login logic
+    const data = await loginUser({ email, password });
+    console.log(data.error.data);
+
+    if (data.error) {
+      setError(data.error.data.message);
+    } else {
+      // socket work
+      // socket.emit("new-user");
+      // navigate to the chat
+      navigate("/chat");
+    }
   }
 
   return (
@@ -23,7 +38,7 @@ export const Login = () => {
       >
         <Form style={{ width: "80%", maxWidth: 500 }} onSubmit={handleLogin}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            {error && <p className="alert alert-danger">{error.data}</p>}
+            {error && <p className="alert alert-danger">{error}</p>}
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"

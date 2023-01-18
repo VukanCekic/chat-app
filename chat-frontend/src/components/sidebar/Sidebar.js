@@ -6,9 +6,6 @@ export const Sidebar = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const rooms = ["arcade", "dance-hall", "studio-b", "traphouse"];
-  if (!user) {
-    return <></>;
-  }
   return (
     <>
       <h2>Avaiable rooms</h2>

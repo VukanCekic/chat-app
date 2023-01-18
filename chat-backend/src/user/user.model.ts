@@ -1,23 +1,47 @@
-import * as mongoose from 'mongoose';
+import { ObjectID } from 'bson';
+import { Types } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import isEmail from 'validator/lib/isEmail';
+import { Message } from 'src/user-message/user-message.model';
+import { Room } from 'src/user-room/user-room.model';
+import { v4 as uuidv4 } from 'uuid';
 
-export const UserSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true, unique: true },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true,
-      validate: [isEmail, 'Invalid email'],
-    },
-    password: { type: String, required: true },
-    picture: { type: String },
-    newMessages: { type: Object, default: {} },
-    status: { type: String, default: 'online' },
-  },
-  { minimize: false },
-);
+@Schema()
+export class User {
+  _id?: ObjectID | string;
+
+  @Prop({ required: true, maxlength: 20, minlength: 5, unique: true })
+  name: string;
+
+  @Prop({
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+    validate: [isEmail, 'Invalid email'],
+  })
+  email: string;
+
+  @Prop({ required: true })
+  password: string;
+
+  @Prop({ required: true, type: String })
+  picture: string;
+
+  @Prop({ required: true, type: String, default: 'online' })
+  status: string;
+
+  @Prop({ required: true })
+  clientId: string;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Message' }] })
+  messages?: Message[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Room' }] })
+  joinedRooms?: Room[];
+}
+
+export const UserSchema = SchemaFactory.createForClass(User);
 
 UserSchema.methods.toJSON = function () {
   const user = this;
@@ -25,12 +49,3 @@ UserSchema.methods.toJSON = function () {
   delete userObject.password;
   return userObject;
 };
-
-export interface User extends mongoose.Document {
-  name: string;
-  email: string;
-  password: string;
-  picture: string;
-  newMessages: object;
-  status: string;
-}

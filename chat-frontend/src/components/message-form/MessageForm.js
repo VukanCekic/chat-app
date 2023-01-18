@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
@@ -19,7 +19,6 @@ export const MessageForm = () => {
                     </> */}
       </div>
 
-      {!user && <div className="alert alert-danger">Please login</div>}
       <Form onSubmit={() => {}}>
         <Row>
           <Col md={11}>
@@ -27,7 +26,6 @@ export const MessageForm = () => {
               <Form.Control
                 type="text"
                 placeholder="Your message"
-                disabled={!user}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               ></Form.Control>

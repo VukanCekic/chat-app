@@ -17,7 +17,6 @@ export const Login = () => {
     e.preventDefault();
     // login logic
     const data = await loginUser({ email, password });
-    console.log(data.error.data);
 
     if (data.error) {
       setError(data.error.data.message);

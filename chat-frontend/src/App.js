@@ -7,25 +7,50 @@ import { Home } from "./pages/home/Home";
 import { Signup } from "./pages/signup/Signup";
 import { Chat } from "./pages/chat/Chat";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import { PrivateRoutes } from "./utils/private-route.utils";
+import { AppContext, socket } from "./context/app-context";
 
 function App() {
+  const [rooms, setRooms] = useState([]);
+  const [currentRoom, setCurrentRoom] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [privateMemberMsg, setPrivateMemberMsg] = useState({});
+  const [newMessages, setNewMessages] = useState({});
   const user = useSelector((state) => state.user);
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Navigation></Navigation>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {!user && (
-            <>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-            </>
-          )}
-          <Route path="/chat" element={<Chat />} />
-        </Routes>
-      </BrowserRouter>
+      <AppContext.Provider
+        value={{
+          socket,
+          currentRoom,
+          setCurrentRoom,
+          members,
+          setMembers,
+          messages,
+          setMessages,
+          privateMemberMsg,
+          setPrivateMemberMsg,
+          rooms,
+          setRooms,
+          newMessages,
+          setNewMessages,
+        }}
+      >
+        <BrowserRouter>
+          <Navigation></Navigation>
+          <Routes>
+            <Route element={<PrivateRoutes />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={!user ? <Login /> : <Chat />} />
+              <Route path="/signup" element={!user ? <Signup /> : <Chat />} />
+              <Route path="/chat" element={<Chat />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AppContext.Provider>
     </div>
   );
 }

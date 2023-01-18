@@ -6,17 +6,24 @@ import { Login } from "./pages/login/Login";
 import { Home } from "./pages/home/Home";
 import { Signup } from "./pages/signup/Signup";
 import { Chat } from "./pages/chat/Chat";
+import { useSelector } from "react-redux";
 
 function App() {
+  const user = useSelector((state) => state.user);
+
   return (
     <div className="App">
       <BrowserRouter>
         <Navigation></Navigation>
         <Routes>
-          <Route path="/" element={<Home></Home>}></Route>
-          <Route path="/login" element={<Login></Login>}></Route>
-          <Route path="/signup" element={<Signup></Signup>}></Route>
-          <Route path="/chat" element={<Chat></Chat>}></Route>
+          <Route path="/" element={<Home />} />
+          {!user && (
+            <>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+            </>
+          )}
+          <Route path="/chat" element={<Chat />} />
         </Routes>
       </BrowserRouter>
     </div>

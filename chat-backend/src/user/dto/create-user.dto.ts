@@ -1,11 +1,3 @@
-// export class createUserDto {
-//   name: string;
-//   email: string;
-//   password: string;
-//   picture: string;
-//   newMessages: object;
-//   status: string;
-// }
 import { IsEmail, IsNotEmpty, IsString, isString } from 'class-validator';
 
 export class CreateUserDto {

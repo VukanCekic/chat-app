@@ -2,8 +2,6 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { MessageForm } from "../../components/message-form/MessageForm";
 import { Sidebar } from "../../components/sidebar/Sidebar";
-// import Sidebar from "../components/Sidebar";
-// import MessageForm from "../components/MessageForm";
 
 export const Chat = () => {
   return (

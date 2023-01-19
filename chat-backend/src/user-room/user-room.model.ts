@@ -1,12 +1,10 @@
 import { Message } from '../user-message/user-message.model';
 import { User } from '../user/user.model';
-import { ObjectID } from 'bson';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
 @Schema()
 export class Room {
-  _id: ObjectID | string;
 
   @Prop({ required: true, maxlength: 20, minlength: 5 })
   name: string;

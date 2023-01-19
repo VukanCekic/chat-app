@@ -28,6 +28,7 @@ export class UserService {
 
     const newUser = await this.userModel.create(userToCreate);
     newUser.password = await this.hashService.hashPassword(newUser.password);
+    newUser.clientId = null;
 
     const result = await newUser.save();
     return result;

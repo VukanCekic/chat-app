@@ -31,7 +31,7 @@ export class User {
   @Prop({ required: true, type: String, default: 'online' })
   status: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: null })
   clientId: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Message' }] })

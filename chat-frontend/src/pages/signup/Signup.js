@@ -9,12 +9,13 @@ export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [signupUser, { isLoading, error }] = useSignupUserMutation();
+  const [signupUser, { isLoading }] = useSignupUserMutation();
   const navigate = useNavigate();
   //image upload states
   const [image, setImage] = useState(null);
   const [upladingImg, setUploadingImg] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [error, setError] = useState("");
 
   function validateImg(e) {
     const file = e.target.files[0];
@@ -53,15 +54,13 @@ export const Signup = () => {
     if (!image) return alert("Please upload your profile picture");
     const urlData = await uploadImage(image);
     console.log(urlData.url);
-    signupUser({ name, email, password, picture: urlData.url }).then(
-      ({ data }) => {
-        console.log(data);
-        if (data) {
-          console.log(data);
-          navigate("/chat");
-        }
-      }
-    );
+    const data = await signupUser({ name, email, password, picture: urlData.url })
+    if(data.error){
+      console.log(data.error.data.message);
+      setError(data.error.data.message);
+    }else{
+      navigate("/chat");
+    }
   }
 
   return (
@@ -74,6 +73,8 @@ export const Signup = () => {
       >
         <Form style={{ width: "80%", maxWidth: 500 }} onSubmit={handleSignup}>
           <h1 className="text-center">Create account</h1>
+          {error && error.length > 1 && error.map(e => <p key={e} className="alert alert-danger">{e}</p> )}
+          {error && error.length <= 1 && <p className="alert alert-danger">{error}</p>}
           <div className="signup-profile-pic__container">
             <img src={imagePreview || botImg} className="signup-profile-pic" />
             <label htmlFor="image-upload" className="image-upload-label">
@@ -87,7 +88,6 @@ export const Signup = () => {
               onChange={validateImg}
             />
           </div>
-          {error && <p className="alert alert-danger">{error.data}</p>}
           <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>Name</Form.Label>
             <Form.Control

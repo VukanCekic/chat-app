@@ -4,6 +4,7 @@ import { MessageForm } from "../../components/message-form/MessageForm";
 import { Sidebar } from "../../components/sidebar/Sidebar";
 
 export const Chat = () => {
+
   return (
     <Container>
       <Row>

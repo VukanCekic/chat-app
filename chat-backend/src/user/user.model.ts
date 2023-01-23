@@ -3,8 +3,6 @@ import { Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import isEmail from 'validator/lib/isEmail';
 import { Message } from 'src/user-message/user-message.model';
-import { Room } from 'src/user-room/user-room.model';
-import { v4 as uuidv4 } from 'uuid';
 
 @Schema()
 export class User {
@@ -36,9 +34,6 @@ export class User {
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Message' }] })
   messages?: Message[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Room' }] })
-  joinedRooms?: Room[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

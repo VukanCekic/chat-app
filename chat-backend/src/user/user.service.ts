@@ -53,6 +53,13 @@ export class UserService {
     return user;
   }
 
+  public async logoutUser(_id: string): Promise<void> {
+    const user = await this.userModel.findById(_id);
+    user.status = 'offline';
+    user.clientId = null;
+    await user.save();
+  }
+
   private async findOne(email: string) {
     const user = await this.userModel.findOne({ email: email });
     if (!user)

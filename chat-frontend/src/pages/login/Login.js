@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../../services/app-api";
 
 import "./Login.css";
-import {AppContext} from "../../context/app-context";
+import { AppContext } from "../../context/app-context";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -22,8 +22,7 @@ export const Login = () => {
     if (data.error) {
       setError(data.error.data.message);
     } else {
-      console.log(data.data.name)
-      socket.emit("enter-chat-room", {name: data.data.name} );
+      socket.emit("new-user", { name: data.data.name });
       navigate("/chat");
     }
   }

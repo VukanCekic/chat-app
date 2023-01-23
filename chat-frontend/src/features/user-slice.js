@@ -13,7 +13,9 @@ export const userSlice = createSlice({
       }
     },
     resetNotifications: (state, { payload }) => {
-      delete state.newMessages[payload];
+      if (state.newMessages && state.newMessages[payload]) {
+        delete state.newMessages[payload];
+      }
     },
   },
 

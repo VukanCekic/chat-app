@@ -1,20 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Nav, Navbar, Container, Button, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector } from "react-redux";
 import { useLogoutUserMutation } from "../services/app-api";
+import { AppContext } from "../context/app-context";
 
 export const Navigation = () => {
   const user = useSelector((state) => state.user);
   const [logoutUser] = useLogoutUserMutation();
-
+  const { socket } = useContext(AppContext);
   async function handleLogout(e) {
     e.preventDefault();
     await logoutUser(user);
-    // redirect to home page
-    window.location.replace("/");
+    socket.emit("leave-chat-room", user);
+    // window.location.replace("/");
   }
-
   return (
     <Navbar bg="info" expand="lg">
       <Container>

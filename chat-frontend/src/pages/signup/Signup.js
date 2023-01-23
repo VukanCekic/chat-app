@@ -53,13 +53,16 @@ export const Signup = () => {
     e.preventDefault();
     if (!image) return alert("Please upload your profile picture");
     const urlData = await uploadImage(image);
-    console.log(urlData.url);
-    const data = await signupUser({ name, email, password, picture: urlData.url })
-    if(data.error){
-      console.log(data.error.data.message);
+    const data = await signupUser({
+      name,
+      email,
+      password,
+      picture: urlData.url,
+    });
+    if (data.error) {
       setError(data.error.data.message);
-    }else{
-      navigate("/chat");
+    } else {
+      navigate("/login");
     }
   }
 
@@ -73,8 +76,16 @@ export const Signup = () => {
       >
         <Form style={{ width: "80%", maxWidth: 500 }} onSubmit={handleSignup}>
           <h1 className="text-center">Create account</h1>
-          {error && error.length > 1 && error.map(e => <p key={e} className="alert alert-danger">{e}</p> )}
-          {error && error.length <= 1 && <p className="alert alert-danger">{error}</p>}
+          {error &&
+            Array.isArray(error) &&
+            error.map((e) => (
+              <p key={e} className="alert alert-danger">
+                {e}
+              </p>
+            ))}
+          {error && !Array.isArray(error) && (
+            <p className="alert alert-danger">{error}</p>
+          )}
           <div className="signup-profile-pic__container">
             <img src={imagePreview || botImg} className="signup-profile-pic" />
             <label htmlFor="image-upload" className="image-upload-label">

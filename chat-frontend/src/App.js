@@ -1,6 +1,7 @@
 import "./App.css";
 import { Navigation } from "./components/Navigation";
-import {BrowserRouter, Routes, Route, useNavigate, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useLogoutUserMutation } from "./services/app-api";
 
 import { Login } from "./pages/login/Login";
 import { Home } from "./pages/home/Home";
@@ -20,6 +21,7 @@ function App() {
   const [newMessages, setNewMessages] = useState({});
   const user = useSelector((state) => state.user);
 
+  const [logoutUser] = useLogoutUserMutation();
 
   return (
     <div className="App">
@@ -43,15 +45,19 @@ function App() {
         <BrowserRouter>
           <Navigation></Navigation>
           <Routes>
-
             <Route element={<PrivateRoutes />}>
               <Route path="/chat" element={<Chat />} />
             </Route>
 
-              <Route path="/" element={<Home />} />
-              <Route path='/login' element={!user ? <Login /> : <Navigate to='/chat' />} />
-              <Route path='/signup' element={!user ? <Signup /> : <Navigate to='/chat' />} />
-
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/login"
+              element={!user ? <Login /> : <Navigate to="/chat" />}
+            />
+            <Route
+              path="/signup"
+              element={!user ? <Signup /> : <Navigate to="/chat" />}
+            />
           </Routes>
         </BrowserRouter>
       </AppContext.Provider>

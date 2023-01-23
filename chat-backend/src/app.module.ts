@@ -6,7 +6,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import { UserModule } from './user/user.module';
 import { Message, MessageSchema } from './user-message/user-message.model';
-import { Room, RoomSchema } from './user-room/user-room.model';
 import { User, UserSchema } from './user/user.model';
 dotenv.config();
 @Module({
@@ -17,7 +16,6 @@ dotenv.config();
     UserModule,
     MongooseModule.forFeature([
       { name: Message.name, schema: MessageSchema },
-      { name: Room.name, schema: RoomSchema },
       { name: User.name, schema: UserSchema },
     ]),
   ],

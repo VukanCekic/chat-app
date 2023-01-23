@@ -1,4 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { Delete, Get } from '@nestjs/common/decorators';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UserService } from './user.service';
@@ -8,12 +9,23 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/register')
-  addUser(@Body() body: CreateUserDto): any {
-    return this.userService.createUser(body);
+  async addUser(@Body() body: CreateUserDto): Promise<any> {
+    return await this.userService.createUser(body);
   }
 
   @Post('/login')
-  login(@Body() body: LoginUserDto): any {
-    return this.userService.logInUser(body);
+  async login(@Body() body: LoginUserDto): Promise<any> {
+    return await this.userService.logInUser(body);
+  }
+
+  @Delete('/logout')
+  async logout(@Body() _id: string): Promise<any> {
+    await this.userService.logoutUser(_id);
+    return { status: 200 };
+  }
+
+  @Get('/rooms')
+  rooms(): any {
+    return ['arcade', 'dance-hall', 'studio-b', 'traphouse'];
   }
 }
